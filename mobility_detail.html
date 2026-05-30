@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe Perfil de Mobilidade{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'mobility-list' %}">Mobilidade</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0">Perfil de Mobilidade: {{ profile.resident.first_name }} {{ profile.resident.last_name }}</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Habitante</dt>
+            <dd class="col-sm-8">
+                <a href="{% url 'resident-detail' profile.resident.pk %}">{{ profile.resident }}</a>
+            </dd>
+
+            <dt class="col-sm-4">Mobilidade Reduzida</dt>
+            <dd class="col-sm-8">
+                {% if profile.has_reduced_mobility %}
+                    <span class="badge bg-danger">Sim</span>
+                {% else %}
+                    <span class="badge bg-success">Não</span>
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-4">Tipo de Limitação</dt>
+            <dd class="col-sm-8">{{ profile.mobility_type|default:"Não especificado" }}</dd>
+
+            <dt class="col-sm-4">Necessita Assistência</dt>
+            <dd class="col-sm-8">
+                {% if profile.needs_assistance %}
+                    <span class="badge bg-warning text-dark">Sim</span>
+                {% else %}
+                    <span class="badge bg-secondary">Não</span>
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-4">Notas</dt>
+            <dd class="col-sm-8">{{ profile.notes|default:"Sem notas" }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'mobility-list' %}" class="btn btn-outline-secondary">Voltar</a>
+        <a href="{% url 'mobility-update' profile.pk %}" class="btn btn-primary">Editar Perfil</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe do Agregado{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'household-list' %}">Agregados</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ household.address|truncatechars:50 }}</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Zona de Intervenção</dt>
+                    <dd class="col-sm-8">{{ household.zone }}</dd>
+                    <dt class="col-sm-4">Endereço Completo</dt>
+                    <dd class="col-sm-8">{{ household.address }}</dd>
+                    <dt class="col-sm-4">Coordenadas</dt>
+                    <dd class="col-sm-8">
+                        {% if household.latitude and household.longitude %}
+                            {{ household.latitude }}, {{ household.longitude }}
+                            <a href="https://maps.google.com/?q={{ household.latitude }},{{ household.longitude }}" target="_blank" class="ms-2 small">Ver no mapa</a>
+                        {% else %}
+                            <span class="text-muted">Não definidas</span>
+                        {% endif %}
+                    </dd>
+                    <dt class="col-sm-4">Prioridade de Evacuação</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-{% if household.evacuation_priority == 5 %}dark{% elif household.evacuation_priority == 4 %}danger{% elif household.evacuation_priority == 3 %}warning text-dark{% elif household.evacuation_priority == 2 %}info{% else %}success{% endif %}">
+                            {{ household.get_evacuation_priority_display }}
+                        </span>
+                    </dd>
+                    <dd class="col-sm-8">
+                        <span class="badge {% if household.evacuation_priority >= 3 %}bg-danger{% elif household.evacuation_priority >= 2 %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                            {{ household.evacuation_priority }}
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'household-list' %}" class="btn btn-outline-secondary">Voltar</a>
+                <a href="{% url 'household-update' household.pk %}" class="btn btn-primary">Editar Agregado</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white"><h5 class="mb-0">Habitantes</h5></div>
+            <ul class="list-group list-group-flush">
+                {% for r in household.residents.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ r.first_name }} {{ r.last_name }}</strong><br>
+                        <small class="text-muted">{{ r.phone }}</small>
+                        {% if r.is_primary %}<span class="badge bg-primary ms-1">Principal</span>{% endif %}
+                    </div>
+                    <a href="{% url 'resident-detail' r.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">Sem habitantes registados.</li>
+                {% endfor %}
+            </ul>
+            <div class="card-footer">
+                <a href="{% url 'resident-create' %}?household={{ household.pk }}" class="btn btn-sm btn-outline-info w-100">+ Adicionar Habitante</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

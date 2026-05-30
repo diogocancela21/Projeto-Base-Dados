@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe do Habitante{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'resident-list' %}">Habitantes</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">👤 {{ resident.first_name }} {{ resident.last_name }}</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Data de Nascimento</dt>
+                    <dd class="col-sm-8">{{ resident.birth_date|date:"d/m/Y" }}</dd>
+
+                    <dt class="col-sm-4">Telefone</dt>
+                    <dd class="col-sm-8">{{ resident.phone }}</dd>
+
+                    <dt class="col-sm-4">Contacto Principal</dt>
+                    <dd class="col-sm-8">
+                        {% if resident.is_primary %}
+                            <span class="badge bg-primary">Sim</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Não</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-4">Agregado Familiar</dt>
+                    <dd class="col-sm-8">
+                        <a href="{% url 'household-detail' resident.household.pk %}">
+                            {{ resident.household.address|truncatechars:50 }}
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'resident-list' %}" class="btn btn-outline-secondary">← Voltar</a>
+                <a href="{% url 'resident-update' resident.pk %}" class="btn btn-primary">Editar Habitante</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-header {% if resident.mobility.has_reduced_mobility %}bg-danger{% else %}bg-success{% endif %} text-white">
+                <h5 class="mb-0">♿ Perfil de Mobilidade</h5>
+            </div>
+            <div class="card-body">
+                {% if resident.mobility %}
+                    <p><strong>Mobilidade Reduzida:</strong> 
+                        {% if resident.mobility.has_reduced_mobility %}Sim{% else %}Não{% endif %}
+                    </p>
+                    <p><strong>Tipo:</strong> {{ resident.mobility.mobility_type|default:"-" }}</p>
+                    <p><strong>Necessita Assistência:</strong> 
+                        {% if resident.mobility.needs_assistance %}Sim{% else %}Não{% endif %}
+                    </p>
+                    <p><strong>Notas:</strong> {{ resident.mobility.notes|default:"-" }}</p>
+                {% else %}
+                    <p class="text-muted mb-0">Perfil de mobilidade não registado. Gere via <a href="/admin">Admin</a>.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

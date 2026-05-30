@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe Zona{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white"><h4 class="mb-0">{{ zone.name }} ({{ zone.municipality }})</h4></div>
+    <div class="card-body">
+        <p><strong>Nível de Risco:</strong> {{ zone.get_risk_level_display }}</p>
+        <p><strong>Agregados na zona:</strong> {{ zone.households.count }}</p>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'zone-list' %}" class="btn btn-outline-secondary">Voltar</a>
+        <a href="{% url 'zone-update' zone.pk %}" class="btn btn-primary">Editar</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe Ocorrência{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'incident-list' %}">Ocorrências</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">{{ incident.get_incident_type_display }} - {{ incident.zone }}</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Data de Registo</dt>
+            <dd class="col-sm-8">{{ incident.date_reported|date:"d/m/Y" }}</dd>
+
+            <dt class="col-sm-4">Tipo de Ocorrência</dt>
+            <dd class="col-sm-8">{{ incident.get_incident_type_display }}</dd>
+
+            <dt class="col-sm-4">Zona Afetada</dt>
+            <dd class="col-sm-8">
+                <a href="{% url 'zone-detail' incident.zone.pk %}">{{ incident.zone }}</a>
+            </dd>
+
+            <dt class="col-sm-4">Gravidade</dt>
+            <dd class="col-sm-8">
+                <span class="badge bg-{% if incident.severity >= 4 %}danger{% elif incident.severity == 3 %}warning text-dark{% else %}success{% endif %}">
+                    {{ incident.severity }}/5
+                </span>
+            </dd>
+
+            <dt class="col-sm-4">Estado Atual</dt>
+            <dd class="col-sm-8">
+                {% if incident.status == 'active' %}
+                    <span class="badge bg-danger">Ativo</span>
+                {% elif incident.status == 'controlled' %}
+                    <span class="badge bg-warning text-dark">Controlado</span>
+                {% else %}
+                    <span class="badge bg-secondary">Resolvido</span>
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-4">Notas</dt>
+            <dd class="col-sm-8">{{ incident.notes|default:"Sem notas registadas" }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'incident-list' %}" class="btn btn-outline-secondary">Voltar</a>
+        <a href="{% url 'incident-update' incident.pk %}" class="btn btn-primary">Editar Ocorrência</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Painel{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center rounded">
+    <h1 class="display-5 fw-bold">Painel de Registo de Evacuação</h1>
+    <p class="lead">Gestão centralizada de agregados, mobilidade e disponibilidade para épocas de incêndio.</p>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-primary fw-bold">{{ counts.zones }}</h2>
+                <p class="text-muted mb-0">Zonas de Intervenção</p>
+                <a href="{% url 'zone-list' %}" class="btn btn-outline-primary btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-success fw-bold">{{ counts.households }}</h2>
+                <p class="text-muted mb-0">Agregados Familiares</p>
+                <a href="{% url 'household-list' %}" class="btn btn-outline-success btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-info fw-bold">{{ counts.residents }}</h2>
+                <p class="text-muted mb-0">Habitantes Registados</p>
+                <a href="{% url 'resident-list' %}" class="btn btn-outline-info btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-warning fw-bold">{{ counts.availabilities }}</h2>
+                <p class="text-muted mb-0">Disponibilidades Mensais</p>
+                <a href="{% url 'availability-list' %}" class="btn btn-outline-warning btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-danger fw-bold">{{ counts.mobility }}</h2>
+                <p class="text-muted mb-0">Perfis de Mobilidade</p>
+                <a href="{% url 'mobility-list' %}" class="btn btn-outline-danger btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-secondary fw-bold">{{ counts.contacts }}</h2>
+                <p class="text-muted mb-0">Contactos de Emergência</p>
+                <a href="{% url 'emergency-list' %}" class="btn btn-outline-secondary btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-4 col-sm-6">
+        <div class="card h-100 text-center p-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-4 text-dark fw-bold">{{ counts.incidents }}</h2>
+                <p class="text-muted mb-0">Ocorrências Registadas</p>
+                <a href="{% url 'incident-list' %}" class="btn btn-outline-dark btn-sm mt-2">Gerir</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

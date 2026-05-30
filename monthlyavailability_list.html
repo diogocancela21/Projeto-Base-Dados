@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Disponibilidades Mensais{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Disponibilidades Mensais</h2>
+    <a href="{% url 'availability-create' %}" class="btn btn-primary">+ Nova Disponibilidade</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-striped table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Agregado</th>
+                    <th>Período</th>
+                    <th>Estado</th>
+                    <th>Regresso Previsto</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in availabilities %}
+                <tr>
+                    <td>{{ a.household.address|truncatechars:40 }}</td>
+                    <td>{{ a.month }}/{{ a.year }}</td>
+                    <td>
+                        {% if a.status == 'home' %}
+                            <span class="badge bg-success">Em casa</span>
+                        {% elif a.status == 'abroad' %}
+                            <span class="badge bg-warning text-dark">No estrangeiro</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Indisponível</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ a.return_date|default:"-"|date:"d/m/Y" }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'availability-detail' a.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                        <a href="{% url 'availability-update' a.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        Sem registos de disponibilidade. <a href="{% url 'availability-create' %}">Adicionar o primeiro</a>.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

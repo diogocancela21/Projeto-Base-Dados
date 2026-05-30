@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe Contacto de Emergência{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'emergency-list' %}">Contactos</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">Contacto: {{ contact.name }}</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Nome</dt>
+            <dd class="col-sm-8">{{ contact.name }}</dd>
+
+            <dt class="col-sm-4">Telefone</dt>
+            <dd class="col-sm-8">{{ contact.phone }}</dd>
+
+            <dt class="col-sm-4">Relação com o Agregado</dt>
+            <dd class="col-sm-8">{{ contact.relationship }}</dd>
+
+            <dt class="col-sm-4">Agregado Familiar</dt>
+            <dd class="col-sm-8">
+                <a href="{% url 'household-detail' contact.household.pk %}">{{ contact.household.address|truncatechars:60 }}</a>
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'emergency-list' %}" class="btn btn-outline-secondary">Voltar</a>
+        <a href="{% url 'emergency-update' contact.pk %}" class="btn btn-primary">Editar Contacto</a>
+    </div>
+</div>
+{% endblock %}

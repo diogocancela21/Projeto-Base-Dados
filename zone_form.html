@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - {% if form.instance.pk %}Editar{% else %}Criar{% endif %} Zona{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white"><h4 class="mb-0">{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Zona</h4></div>
+            <div class="card-body">
+                <form method="post">{% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3"><label class="form-label">{{ field.label }}</label>{{ field }}</div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'zone-list' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

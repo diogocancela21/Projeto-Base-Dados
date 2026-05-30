@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}InfoResgate - Detalhe Disponibilidade{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Painel</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'availability-list' %}">Disponibilidades</a></li>
+        <li class="breadcrumb-item active">Detalhe</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark">
+        <h4 class="mb-0">📅 Disponibilidade: {{ availability.household.address|truncatechars:50 }}</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Agregado Familiar</dt>
+            <dd class="col-sm-8">
+                <a href="{% url 'household-detail' availability.household.pk %}">{{ availability.household }}</a>
+            </dd>
+
+            <dt class="col-sm-4">Período</dt>
+            <dd class="col-sm-8">{{ availability.month }}/{{ availability.year }}</dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">
+                {% if availability.status == 'home' %}
+                    <span class="badge bg-success">Em casa</span>
+                {% elif availability.status == 'abroad' %}
+                    <span class="badge bg-warning text-dark">No estrangeiro</span>
+                {% else %}
+                    <span class="badge bg-secondary">Indisponível</span>
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-4">Data de Regresso</dt>
+            <dd class="col-sm-8">{{ availability.return_date|default:"Não definida"|date:"d/m/Y" }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'availability-list' %}" class="btn btn-outline-secondary">← Voltar</a>
+        <a href="{% url 'availability-update' availability.pk %}" class="btn btn-primary">Editar Registo</a>
+    </div>
+</div>
+{% endblock %}
